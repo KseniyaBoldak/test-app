@@ -1,0 +1,22 @@
+.counter-header {
+    font-size: 5vmin;
+    color: rgb(3, 40, 28);
+}
+.counter-value {
+    font-size: 6vmin;
+    color: rgb(11, 112, 11);
+}
+.counter-decrement, .counter-increment, .counter-reset {
+    border-radius: 5%;
+    width: 5vw;
+    height: 3vw;
+    border: 2px solid #4e4e53;
+    font-size: 3vmin;
+    color: #161618;
+    margin: 1%;
+    transition: all ease-in-out 0.2s;
+    
+}
+.counter-decrement:active, .counter-increment:active, .counter-reset:active {
+    transform: scale(0.5);
+}

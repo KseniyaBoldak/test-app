@@ -1,13 +1,12 @@
 import React from 'react';
 import './App.css';
-import Button from "./Button/Button";
+import Counter from './Counter/Counter';
+
 
 function App() {
   return (
     <div className="App">
-      <h3>This is React Application</h3>
-        <Button>Hello</Button>
-        <Button>How are you?</Button>
+        <Counter/>
     </div>
   );
 }
