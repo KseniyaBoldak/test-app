@@ -1,10 +1,10 @@
-import Calculator from './Calculator/Calculator';
+import UserCards from "./Users/UserCards";
 
 function App() {
  
   return (
     <div className="App">
-        <Calculator></Calculator>
+        <UserCards></UserCards>
     </div>
   );
 }
