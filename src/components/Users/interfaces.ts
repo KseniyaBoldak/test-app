@@ -15,9 +15,5 @@ export interface IUser {
     },
     phone: string;
     website: string;
-    company: {
-        name: string;
-        catchPhrase: string;
-        bs: string;
-    };
+    company?: any;
 }
