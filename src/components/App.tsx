@@ -1,10 +1,11 @@
-import UserCards from "./Users/UserCards";
+import UserPosts from './UserPosts/UserPosts';
+import React from "react";
 
 function App() {
  
   return (
     <div className="App container">
-        <UserCards></UserCards>
+        <UserPosts></UserPosts>
     </div>
   );
 }

@@ -1,5 +1,7 @@
-import React, { FormEvent, useMemo, useState } from 'react';
+import React, { FormEvent, useMemo, useState, useSyncExternalStore } from 'react';
 import { USERS } from './users';
+import axios from 'axios';
+import { IUser } from './interfaces';
 
 
 const UserCards = () => {
@@ -12,16 +14,20 @@ const UserCards = () => {
         company: '',
         address: ''
     };
-    const [users, setUsers] = useState(USERS);
+    const [users, setUsers] = useState<IUser[]>([]);
     const [search, setSearch] = useState<string>('');
     const [isShowEdit, setIsShowEdit] = useState<boolean>(false);
     const [userValue, setUserValue] = useState<any>(initialValue);
     const [newUserId, setNewUserId] = useState<number>(USERS.length + 1);
    
-    const deleteUser = (id: number) => {
+    const deleteUser = async(id: number) => {
         const confirm = window.confirm('Do you want delete this user?');
         if (confirm) {
-            setUsers(users.filter(user => user.id !== id));
+            const del = await axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`);
+            if (del.status === 200) {
+                setUsers(users.filter(user => user.id !== id));
+
+            }
         }
     }
     const searchedUsers = useMemo(() => {
@@ -44,11 +50,20 @@ const UserCards = () => {
         setUsers([...users, userValueWithId]);
         setUserValue(initialValue);
     };
-
+    const getAllUsers = async() => {
+        try {
+            const responseData = await axios.get('https://jsonplaceholder.typicode.com/users');
+            const users = responseData.data;
+            setUsers(users);
+        } catch (err) {
+            alert(err)
+        }
+    }
     
     return (
         <div className="row row-cols-1 row-cols-md-3 g-4 mt-5">
             <h1 className="text-center w-100">User cards</h1>
+            <button className="btn btn-primary" onClick={() => getAllUsers()}>Get All Users</button>
             <div>
             <button className="btn btn-success" onClick={() => setIsShowEdit(!isShowEdit)}>Show Form for Add user
             </button>
