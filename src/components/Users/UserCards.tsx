@@ -1,101 +1,25 @@
-import React, { FormEvent, useMemo, useState, useSyncExternalStore } from 'react';
-import { USERS } from './users';
-import axios from 'axios';
 import { IUser } from './interfaces';
+import React, {SetStateAction} from 'react';
+import http from "../../http";
 
 
-const UserCards = () => {
-    const initialValue = {
-        name: '',
-        username: '',
-        email: '', 
-        phone: '',
-        website: '', 
-        company: '',
-        address: ''
-    };
-    const [users, setUsers] = useState<IUser[]>([]);
-    const [search, setSearch] = useState<string>('');
-    const [isShowEdit, setIsShowEdit] = useState<boolean>(false);
-    const [userValue, setUserValue] = useState<any>(initialValue);
-    const [newUserId, setNewUserId] = useState<number>(USERS.length + 1);
+const UserCards = ({users, setUsers}: { users: IUser[], setUsers: React.Dispatch<SetStateAction<IUser[]>> }) => {
    
     const deleteUser = async(id: number) => {
         const confirm = window.confirm('Do you want delete this user?');
         if (confirm) {
-            const del = await axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`);
+            const del = await http.delete(`/users/${id}`);
             if (del.status === 200) {
                 setUsers(users.filter(user => user.id !== id));
 
             }
         }
     }
-    const searchedUsers = useMemo(() => {
-        if (search) {
-            return users.filter(user => user.username.toLowerCase().includes(search.toLowerCase()));
-        }
-        return users;
-    }, [search, users]);
-
-    const getNewData = (id:string, inputValue: string) => {
-        const field = id;
-        const value = inputValue;
-        setUserValue({...userValue, [field]: value});
-       
-    };
-    const addUser = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const userValueWithId = {...userValue, id: newUserId};
-        setNewUserId(newUserId + 1);
-        setUsers([...users, userValueWithId]);
-        setUserValue(initialValue);
-    };
-    const getAllUsers = async() => {
-        try {
-            const responseData = await axios.get('https://jsonplaceholder.typicode.com/users');
-            const users = responseData.data;
-            setUsers(users);
-        } catch (err) {
-            alert(err)
-        }
-    }
+    
     
     return (
-        <div className="row row-cols-1 row-cols-md-3 g-4 mt-5">
-            <h1 className="text-center w-100">User cards</h1>
-            <button className="btn btn-primary" onClick={() => getAllUsers()}>Get All Users</button>
-            <div>
-            <button className="btn btn-success" onClick={() => setIsShowEdit(!isShowEdit)}>Show Form for Add user
-            </button>
-            {isShowEdit &&
-            <form onSubmit={event => addUser(event)}>
-                {Object.keys(USERS[0]).map(field => {
-                        if (field === "company" || field === "id" || field === "address") return;
-                        return <input className="form-control mt-2"
-                                        key={field}
-                                        required
-                                        id={field} 
-                                        placeholder={`Input user ${field}`}
-                                        value={userValue[field]}
-                                        onChange ={(event) => getNewData(event.target.id, event.target.value)}
-
-                            />
-                        }
-                    )}
-                    <button className="btn btn-success mt-2" type="submit">Add User</button>
-                    </form>}
-                </div>
-            <div className="input-group mb-3">
-                <span className="input-group-text" id="basic-addon1">Search</span>
-                <input type="text"
-                       className="form-control"
-                       placeholder="Input username"
-                       aria-label="Username"
-                       aria-describedby="basic-addon1"
-                       onChange={(event) => setSearch(event.target.value)}
-                />
-            </div>
-            {searchedUsers.map(user =>
+        <>
+            {users.map(user =>
                 <div className="col" key={user.id}>
                     <div className="card h-100">
                         <div className="card-body" id={user.id.toString()}>
@@ -120,7 +44,7 @@ const UserCards = () => {
                     </div>
                 </div>
             )}
-        </div>
+       </>
     );
 };
 

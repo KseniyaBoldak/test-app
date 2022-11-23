@@ -1,11 +1,10 @@
-import UserPosts from './UserPosts/UserPosts';
-import React from "react";
+import Users from '../components/pages/Users';
 
 function App() {
  
   return (
     <div className="App container">
-        <UserPosts></UserPosts>
+        <Users/>
     </div>
   );
 }
