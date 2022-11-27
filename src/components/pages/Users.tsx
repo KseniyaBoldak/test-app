@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import AddUser from '../Users/AddUser';
 import SearchUser from '../Users/SearchUser'
-import {useSearch} from '../hooks/useSerach';
+import {useSearch} from '../hooks/useSearch';
 import http from '../../http';
 import {IUser} from '../Users/interfaces';
 import UserCards from "../Users/UserCards";
@@ -11,6 +11,9 @@ const Users = () => {
     const [search, setSearch] = useState<string>('');
     const [isShowEdit, setIsShowEdit] = useState<boolean>(false);
     const searchedUsers = useSearch(users, search, 'name');
+    useEffect(() => {
+        getAllUsers();
+    },[]);
     const getAllUsers = async () => {
         try {
             const responseData = await http.get('/users');
@@ -23,14 +26,19 @@ const Users = () => {
     return (
         <div className="row row-cols-1 row-cols-md-3 g-4 mt-5">
             <h1 className="text-center w-100">Users page</h1>
-            <button className="btn btn-success" onClick={() => getAllUsers()}>Get All users</button>
             <div>
                 <button className="btn btn-success" onClick={() => setIsShowEdit(!isShowEdit)}>Show Form for Add user
                 </button>
                 {isShowEdit && <AddUser users={users} setUsers={setUsers}/>}
             </div>
             <SearchUser setSearch={setSearch}/>
-            <UserCards users={searchedUsers} setUsers={setUsers} />
+            {
+                users.length
+                    ?
+                    <UserCards users={searchedUsers} setUsers={setUsers} />
+                    :
+                    <h1>Users not found...</h1> //spinner
+            }
         </div>
     );
 };

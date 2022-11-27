@@ -1,6 +1,7 @@
 import { IUser } from './interfaces';
 import React, {SetStateAction} from 'react';
 import http from "../../http";
+import {Link} from "react-router-dom";
 
 
 const UserCards = ({users, setUsers}: { users: IUser[], setUsers: React.Dispatch<SetStateAction<IUser[]>> }) => {
@@ -23,7 +24,9 @@ const UserCards = ({users, setUsers}: { users: IUser[], setUsers: React.Dispatch
                 <div className="col" key={user.id}>
                     <div className="card h-100">
                         <div className="card-body" id={user.id.toString()}>
-                            <h5 className="card-title">{user.name}</h5>
+                            <Link to={`/users/${user.id}`}>
+                                <h5 className="card-title">{user.name}</h5>
+                            </Link>
                             <p className="card-text">{user.username}</p>
                             <p className="card-text">{user.email}</p>
                             <p className="card-text">{user.phone}</p>
