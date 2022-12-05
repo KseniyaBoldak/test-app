@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
     <Navigation/>
-    <div className="container d-flex w-100 flex-wrap">
+    <div className="container">
         <AppRoutes/>
     </div>
 </div>

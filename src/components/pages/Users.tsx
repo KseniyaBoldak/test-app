@@ -5,6 +5,7 @@ import {useSearch} from '../hooks/useSearch';
 import http from '../../http';
 import {IUser} from '../Users/interfaces';
 import UserCards from "../Users/UserCards";
+import "./style.css";
 
 const Users = () => {
     const [users, setUsers] = useState<IUser[]>([]);
@@ -24,14 +25,15 @@ const Users = () => {
         }
     };
     return (
-        <div className="row row-cols-1 row-cols-md-3 g-4 mt-5">
-            <h1 className="text-center w-100">Users page</h1>
+        <>
+        <h1 className="headers">Users page</h1>
+            <SearchUser setSearch={setSearch}/>
             <div>
-                <button className="btn btn-success" onClick={() => setIsShowEdit(!isShowEdit)}>Show Form for Add user
+                <button type="button" className="btn btn-outline-dark mt-3" onClick={() => setIsShowEdit(!isShowEdit)}>Add New User
                 </button>
                 {isShowEdit && <AddUser users={users} setUsers={setUsers}/>}
             </div>
-            <SearchUser setSearch={setSearch}/>
+            <div className="row row-cols-1 row-cols-md-3 g-4 mt-1">
             {
                 users.length
                     ?
@@ -40,6 +42,8 @@ const Users = () => {
                     <h1>Users not found...</h1> //spinner
             }
         </div>
+        </>
+        
     );
 };
 

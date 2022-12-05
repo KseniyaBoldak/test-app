@@ -1,8 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link, useLocation} from 'react-router-dom';
+import Login from '../components/Login';
+import '../components/pages/style.css';
 
 const Navigation = () => {
     const currentLocation = useLocation();
+    const [login, setLogin] = useState<boolean>(true);
     const routes = [
         {
             path: '/users',
@@ -26,7 +29,7 @@ const Navigation = () => {
         }, 
     ]
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav className="stick navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
                 <div>
                     <button className="navbar-toggler float-start" type="button" data-bs-toggle="collapse"
@@ -44,7 +47,11 @@ const Navigation = () => {
                         )}
                     </ul>
                 </div>
-                <button className="btn btn-outline-secondary" type="submit">Logout</button>
+                {login ? 
+                <button className="btn btn-outline-secondary" type="submit" onClick={() => setLogin(false)}>Logout</button>
+                :
+                <Login/>
+                }
             </div>
         </nav>
     );

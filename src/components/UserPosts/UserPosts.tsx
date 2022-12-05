@@ -1,10 +1,10 @@
 import { POSTS } from './posts';
 import { Posts } from './postInterfaces';
 import  React, { useState, useMemo, useEffect, FormEvent,ChangeEvent } from 'react';
-import axios from 'axios';
 import http from '../../http';
+import '../pages/style.css';
 
-const UserPosts = () => {
+const UserPosts = ({ userId = 0 }: { userId?: number }) => {
     const initialPost = {
         title: '',
         body: ''
@@ -13,7 +13,7 @@ const UserPosts = () => {
     const [search, searchPosts] = useState<string>('');
     const getAllPosts = async() => {
         try {
-            const responseData = await http.get('/posts');
+            const responseData = await http.get(userId === 0 ? '/posts' : `/posts?userId=${userId}`);
             const posts = responseData.data;
             setPosts(posts);
         } catch (err) {
@@ -57,40 +57,48 @@ const UserPosts = () => {
         }
 
     }
-
+    const [form, showForm] = useState(false);
     return (
-        <div className="card container">
-            <h1 className="w-50 mb-3 mt-3 p-2 bg-info bg-opacity-10 border border-info border-start-0 rounded-end">User Posts</h1>
-            <form className="form-control mb-3 d-flex flex-column w-50"
-                    onSubmit={(event) => addPost(event)}>
-                        {Object.keys(POSTS[0]).map(field => {
-                            if (field === "userId" || field === "id") return;
-                            return <input type="text" className="form-control mb-2"
-                                        key={field}
-                                        required
-                                        id={field}
-                                        placeholder={`${field}`}
-                                        value={newPost[field]}
-                                        onChange={event => getNewPost(event)}
-                                    />
-                                    }
-                                )
-                        }
-                <button className="btn btn-secondary w-25 mb-3">Add New Post</button>
-            </form>
-            <div className="input-group mb-3 w-50">
-                <span className="input-group-text" id="basic-addon1">Search</span>
+        <div>
+            
+            <div className="input-group mb-3 mt-3">
+                <span className="input-group-text input-text" id="basic-addon1">Search</span>
                 <input type="text"
-                       className="form-control"
-                       placeholder="Input Post Title"
+                       className="form-control input-text"
+                       placeholder="Post Title"
                        onChange={(event) => searchPosts(event.target.value)}
                 />
-            </div>            
+            </div> 
+            <button className="btn btn-outline-dark mb-2" onClick={() => showForm(!form)}>Add New Post</button>  
+            {form &&
+                <form className="form-control mb-3 d-flex flex-column w-50"
+                onSubmit={(event) => addPost(event)}>
+                    {Object.keys(POSTS[0]).map(field => {
+                        if (field === "userId" || field === "id") return;
+                        return <input type="text" className="form-control mb-2 input-text"
+                                    key={field}
+                                    required
+                                    id={field}
+                                    placeholder={`${field}`}
+                                    value={newPost[field]}
+                                    onChange={event => getNewPost(event)}
+                                />
+                                }
+                            )
+                    }
+                   <div className="d-flex justify-content-end">
+                        <button className="btn btn-outline-success mt-2 ps-5 pe-5" type="submit">Save</button>
+                    </div> 
+            
+        </form>}
+            
                 {searchedPosts.map(post => 
                 <div className="card-body border-bottom" key={post.id}>
-                    <h5 className="card-title text-center">{post.title}</h5>
-                    <p className="card-text text-bg-light p-3 rounded-pill">{post.body}</p>
-                    <button className="btn btn-primary" onClick={() => deletePost(post.id)}>Delete Post</button>
+                    <h5 className="card-title text-center m-2">{post.title}</h5>
+                    <p className="card-text text-bg-light p-3 rounded-pill m-2">{post.body}</p>
+                    <div className="d-flex justify-content-end">
+                    <button className="btn btn-outline-danger ps-5 pe-5 m-2" onClick={() => deletePost(post.id)}>Delete</button>
+                    </div>
                 </div>
                 
                 )}

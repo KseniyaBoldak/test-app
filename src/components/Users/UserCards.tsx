@@ -2,6 +2,7 @@ import { IUser } from './interfaces';
 import React, {SetStateAction} from 'react';
 import http from "../../http";
 import {Link} from "react-router-dom";
+import '../pages/style.css';
 
 
 const UserCards = ({users, setUsers}: { users: IUser[], setUsers: React.Dispatch<SetStateAction<IUser[]>> }) => {
@@ -24,22 +25,22 @@ const UserCards = ({users, setUsers}: { users: IUser[], setUsers: React.Dispatch
                 <div className="col" key={user.id}>
                     <div className="card h-100">
                         <div className="card-body" id={user.id.toString()}>
-                            <Link to={`/users/${user.id}`}>
-                                <h5 className="card-title">{user.name}</h5>
+                            <Link to={`/users/${user.id}`} className='userColorName'>
+                                <h5 className="userColorName text-center">{user.name}</h5>
                             </Link>
-                            <p className="card-text">{user.username}</p>
-                            <p className="card-text">{user.email}</p>
-                            <p className="card-text">{user.phone}</p>
-                            <p className="card-text">{user.website}</p>
-                            <p className="card-text">{user.company?.name}</p>
-                            <p className="card-text">{user.address?.city}</p>
+                            <p className="card-text">&#9998; {user.username}</p>
+                            <p className="card-text">&#9993; {user.email}</p>
+                            <p className="card-text">&#9743; {user.phone}</p>
+                            <p className="card-text">&#128269; {user.website}</p>
+                            <p className="card-text">&#128188; Company: {user.company?.name}</p>
+                            <p className="card-text">&#127968; {user.address?.city}</p>
                         </div>
                         
-                        <div className="card-footer">
-                            <button className="btn btn-danger"
+                        <div className="card-footer d-flex justify-content-end">
+                            <button className="btn btn-outline-danger ps-5 pe-5"
                                     onClick={() => deleteUser(user.id)}
                             >
-                                Delete this user
+                                Delete
                             </button>
                             
                         </div>

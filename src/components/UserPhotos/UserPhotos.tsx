@@ -2,6 +2,7 @@ import {PHOTOS} from '../UserPhotos/photos';
 import {Photos} from '../UserPhotos/interfacesPhoto';
 import {useState, useEffect} from 'react';
 import http from '../../http';
+import '../pages/style.css';
 
 const UserPhotos = () => {
     const [photos, setPhotos] = useState<Photos[]>([]);
@@ -17,25 +18,24 @@ const UserPhotos = () => {
     useEffect(() => {
         getAllPhotos();
     }, []);
-    return (
-        <div> 
-        <h1>Users Photos</h1>
-        {PHOTOS.map(photo => {
-           return  <div className="w-100">
-                        <div className="card w-25" key={photo.id}>
-                            <img src={photo.url} className="card-img-top" />
-                            <div className="card-body">
-                                <p className="card-text">{photo.title}</p>
-                            </div>
-                        </div>
-                    </div>
-           
-        }
 
-        )
-            
-    }
-    </div>
+    
+    return (
+        <>
+        <h1 className="headers">Users Photos</h1>
+        <div className='d-flex flex-sm-wrap'> 
+            {PHOTOS.map((photo:Photos) => {
+                return  <div className="w-25">
+                            <div className="card m-2" key={photo.id}>
+                                <img src={photo.url} className="card-img-top" />
+                                <div className="card-body">
+                                    <p className="card-text">{photo.title}</p> 
+                                </div>
+                            </div>
+                        </div>})
+            }
+        </div>
+        </>
     )
 }
 export default UserPhotos;

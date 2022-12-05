@@ -29,22 +29,24 @@ const AddUser = ({ users, setUsers }: { users: IUser[], setUsers: React.Dispatch
         }
     }
     return (
-        <form onSubmit={event => addUser(event)}>
+        <form onSubmit={event => addUser(event)} className='form-control mt-2'>
             {Object.keys(USERS[0]).map(field => {
-                    if (field === "company" || field === "id" || field === "address") return
-                    // Object.keys(USERS[0].company).map(companyField => <input placeholder={companyField}/>)
-                    return <input className="form-control mt-2"
+                    if (field === "company" || field === "id" || field === "address") return;
+                    return <input className="form-control mt-2 input-text"
                                   key={field}
                                   required
                                   id={field}
                                   type={field === 'email' ? 'email' : 'text'}
                                   value={userValue[field]}
-                                  placeholder={`Input user ${field}`}
+                                  placeholder={`${field}...`}
                                   onChange={event => onChange(event)}
                     />
                 }
             )}
-            <button className="btn btn-success mt-2" type="submit">Add User</button>
+            <div className="d-flex w-100 justify-content-end">
+                <button className="btn btn-outline-success mt-2 ps-5 pe-5" type="submit">Save</button>
+            </div>
+            
         </form>
     )
 };
